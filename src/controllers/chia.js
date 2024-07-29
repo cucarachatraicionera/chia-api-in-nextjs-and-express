@@ -241,6 +241,8 @@ router.get('/list-data-stores', authController.verifyToken, (req, res) => {
     });
 });
 
+
+
 // Nueva ruta GET que devuelve "Hola CHIA"
 router.get('/hola-chia', authController.verifyToken, (req, res) => {
     res.send('Hola CHIA');
