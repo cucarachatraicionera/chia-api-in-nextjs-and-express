@@ -171,13 +171,26 @@ router.post('/create-data-store', authController.verifyToken, (req, res) => {
                 details: stderr
             });
         }
-        console.log(`stdout: ${stdout}`);
-        res.json({
-            message: 'Data Store creado exitosamente',
-            output: stdout
-        });
+
+        try {
+            // Parsear la salida para obtener un JSON limpio
+            const output = JSON.parse(stdout.trim());
+
+            res.json({
+                message: 'Data Store creado exitosamente',
+                id: output.id,
+                success: output.success
+            });
+        } catch (parseError) {
+            console.error(`Error al parsear el JSON: ${parseError.message}`);
+            return res.status(500).json({
+                error: 'Error al procesar la respuesta del comando',
+                details: parseError.message
+            });
+        }
     });
 });
+
 
 // Actualizar Data Store
 router.post('/update-data-store', authController.verifyToken, (req, res) => {
